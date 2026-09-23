@@ -1,178 +1,158 @@
-## Introduction
+# SQL Select Lab — Northwinds Employee & Order Data
 
-In this assessment lab, you will explore basic techniques for retrieving and transforming data using SQL (Structured Query Language) in Python. You will be working with the employees table stored in the `data.sqlite` file and your code for this lab will be in `main.py`. You can run `pytest` and use print statements to check your code as you go. Imagine that you are working within the HR department of the fictional Northwinds Company as a data specialist/analyst and need to be able to easily access select employee records. SQL is just the tool you need!
-<br /><br />
-SQL is a powerful language that allows us to interact with relational databases and perform various operations on the data. By leveraging SQL queries, we can efficiently retrieve specific subsets of data, create meaningful aliases for improved readability, transform selected columns using CASE statements, and utilize built-in SQL functions to perform advanced transformations.
+A Python + SQLite lab exploring core SQL techniques: filtering, aliasing, CASE statements, string functions, numeric functions, and date formatting.
 
-## Learning Objectives
+## 📌 Overview
 
-* Connect to a SQL Database file 
-* Use SELECT in SQL to select columns from a database
-* Use SQL built-in functions to manipulate the values of the given database
+This lab uses the Northwinds company database (`data.sqlite`) to practice querying relational data from Python using `sqlite3` and `pandas`. Queries are loaded into DataFrames and verified with `pytest`.
 
-## Part 1: Connecting to Data
+## 🛠️ Tech Stack
 
-A SQL database file has been provided that contains the Northwind company's product, customer and employee data (fictional). For the scope of this assessment you will focus mostly on the employees tables. You will be asked to retrieve specific information/data using SQL queries in tandem with Pandas to load the results into a DataFrame.
-<br /><br />
-Example:
+- **Python 3**
+- **SQLite** — database engine
+- **pandas** — data loading and manipulation
+- **pytest** — automated testing
 
-```python
-df_answer = pd.read_sql("""SELECT * FROM some_table""", connection)
+## 📁 Project Structure
+
+```text
+se_sql_select_lab/
+│
+├── main.py           # All SQL queries + DataFrame assignments
+├── test_main.py      # Autotests for each step
+├── data.sqlite       # Northwinds database
+├── Pipfile           # Original dependencies (pandas, pytest)
+├── Pipfile.lock
+└── README.md
 ```
 
-Start by running `pipenv install` and `pipenv shell`. You can run the test suite at any time to check your work with `pytest` or `pytest -x` if you want to just run 1 test at a time. You can run the file to check print statement outputs with `python3 main.py`.
+## 🚀 How to Run
 
-### Step 1
+### 1. Create a virtual environment
 
-In `main.py` import the necessary libraries, sqlite3 and pandas. Use the standard alias for the pandas library. Create a connection to the **data.sqlite** database file and store it as the variable conn.
-
-```python
-# STEP 1A
-# Import SQL Library and Pandas
-
-# STEP 1B
-# Connect to the database
-conn = None
+```bash
+python3 -m venv .venv
 ```
 
-As previously stated, this database contains multiple tables but for this assessment you will focus on querying data from the **employees** table and later from the **orderDetails** table. Below, we have provided code that selects all columns and rows from the **employees** table for you to use as reference.
+### 2. Activate the virtual environment
 
-```python
-# Add code below and run file to see data from employees table
-employee_data = pd.read_sql("""SELECT * FROM employees""", conn)
-print("---------------------Employee Data---------------------")
-print(employee_data)
-print("-------------------End Employee Data-------------------")
+Linux/macOS:
+
+```bash
+source .venv/bin/activate
 ```
 
-## Part 2: Basic Select Filtering
+Windows:
 
-### Step 2
-
-Assign the variable `df_first_five` to the employee number and last name from all employees in the employees table in the database. Your result should only contain those two columns.
-
-```python
-# STEP 2
-# Replace None with your code
-df_first_five = None
+```bash
+.venv\Scripts\activate
 ```
 
-### Step 3
+### 3. Install dependencies
 
-Repeat Step 2, but have the last name come before the employee number and assign to `df_five_reverse`.
-
-```python
-# STEP 3
-# Replace None with your code
-df_five_reverse = None
+```bash
+pip install pandas pytest
 ```
 
-## Part 3: Aliasing in Select
+### 4. Start the script
 
-### Step 4
-
-Repeat step 3, but this time use an alias to rename the employee number column as 'ID' and assign to `df_alias`.
-
-```python
-# STEP 4
-# Replace None with your code
-df_alias = None
+```bash
+python3 main.py
 ```
 
-### Step 5
+### 5. Run the tests
 
-Use `CASE` to bin where the jobTitles of President, VP Sales, or VP Marketing have the `role` of "Executive", and the rest of the employes are "Not Executive".
-
-<br /><br />
-
-Define the result of the `CASE` as a new column called `role`. Assign to  the variable `df_executive`.
-
-<br />
-
-***Hint:*** For the WHEN clause if we were looking at Managers, we'd have:
-
-```
-WHEN jobTitle = "Sales Manager (APAC)" OR jobTitle = "Sale Manager (EMEA)" OR jobTitle = "Sales Manager (NA)" THEN "Manager"
+```bash
+pytest
 ```
 
-```python
-# STEP 5
-# Replace None with your code
-df_executive = None
+## 🧠 What This Lab Covers
+
+| Step | Skill | Query Feature |
+| :--- | :--- | :--- |
+| 1 | Connect to SQLite | `sqlite3.connect()` |
+| 2 | Select specific columns | `SELECT col1, col2 FROM ...` |
+| 3 | Column ordering | `SELECT col2, col1 FROM ...` |
+| 4 | Aliasing | `SELECT col AS alias` |
+| 5 | Conditional logic | `CASE WHEN ... THEN ... ELSE ... END` |
+| 6 | String length | `LENGTH(col)` |
+| 7 | Substrings | `SUBSTR(col, start, length)` |
+| 8 | Numeric aggregation | `ROUND()`, `SUM()`, `.values` |
+| 9 | Date formatting | `STRFTIME('%d', col)`, `'%m'`, `'%Y'` |
+
+## 📊 Key Queries
+
+### Select specific columns
+```sql
+SELECT employeeNumber, lastName FROM employees;
 ```
 
-## Part 5: Built-in Functions - Strings
-
-### Step 6
-
-Find the length of the last name for all employees, return only this data as a new column called `name_length`. Assign to `df_name_length`.
-
-```python
-# STEP 6
-# Replace None with your code
-df_name_length = None
+### Alias a column
+```sql
+SELECT lastName, employeeNumber AS ID FROM employees;
 ```
 
-### Step 7
-
-Return only one new column called `short_title`, that contains the first two letters of each persons job title. Assign to `df_short_title`.
-
-```python
-# STEP 7
-# Replace None with your code
-df_short_title = None
+### CASE statement
+```sql
+SELECT jobTitle,
+  CASE
+    WHEN jobTitle = 'President' OR jobTitle = 'VP Sales' OR jobTitle = 'VP Marketing'
+      THEN 'Executive'
+    ELSE 'Not Executive'
+  END AS role
+FROM employees;
 ```
 
-## Part 6: Built-in Functions - Numerics
-
-### Bring in another table from the database
-
-In the code below we have provided a look at a new table within the database provided. This table contains data pertaining to orders placed with the company and has some good numerical and date columns to explore.
-
-```python
-# Add the code below and run the file to see order details data
-
-order_details = pd.read_sql("""SELECT * FROM orderDetails;""", conn)
-print("------------------Order Details Data------------------")
-print(order_details)
-print("----------------End Order Details Data----------------")
+### String length
+```sql
+SELECT LENGTH(lastName) AS name_length FROM employees;
 ```
 
-### Step 8
-
-Find the total amount for all orders, calculated as the sum of rounded total prices, where the total price for each order is the `priceEach` multiplied by the `quantityOrdered`. Make sure you are rounding this internal product result.
-
-Hint: Append `.sum()` to the end of your returned query that contains total price for each order, in order to create the total amount. You could also use the `SUM()` built-in SQL function as well.
-
-<br /><br />
-
-For example:
-
-```python
-sum_total = pd.read_sql("""
-SELECT total_price
-FROM some_table
-""", conn).sum()
+### Substring
+```sql
+SELECT SUBSTR(jobTitle, 1, 2) AS short_title FROM employees;
 ```
 
-```python
-# STEP 8
-# Replace None with your code
-sum_total_price = None
+### Numeric sum
+```sql
+SELECT SUM(ROUND(priceEach * quantityOrdered)) AS total_price FROM orderDetails;
 ```
 
-### Step 9
-
-It is common in other parts of the world as well as the US Military to have dates as Day/Month/Year. Return the original order date column followed by three new columns that display the order date in this format with column names 'day', 'month', and 'year' respectively.
-
-```python
-# STEP 9
-# Replace None with your code
-df_day_month_year = None
+### Date extraction
+```sql
+SELECT orderDate,
+  STRFTIME('%d', orderDate) AS day,
+  STRFTIME('%m', orderDate) AS month,
+  STRFTIME('%Y', orderDate) AS year
+FROM orders;
 ```
 
-### Close the connection
+## ✅ Test Results
 
-```python
-conn.close()
+```text
+9 passed
 ```
+
+All 9 autotests pass across:
+- Connection
+- Basic select filtering
+- Aliasing
+- CASE function
+- String functions
+- Numeric functions
+- Date formatting
+
+## 🧠 Lessons Learned
+
+- **Database-specific syntax matters** — `EXTRACT()` works in PostgreSQL, but SQLite uses `STRFTIME()`
+- **Table names are case-sensitive** in some contexts — `orderdetails` vs `orderDetails`
+- **Aliases rename output, not the actual column**
+- **`.values` strips pandas labels** so positional indexing works
+- **`LENGTH()` and `SUBSTR()`** for string manipulation
+- **`CASE` needs `ELSE`** to avoid `NULL` results
+- **`pd.read_sql`** — one word, one underscore
+
+## 👤 Author
+
+**Mohamed Ahmed** — Full-Stack Engineer  
+[Portfolio](https://codewithmdev.netlify.app) · [GitHub](https://github.com/codewithmDEV)
